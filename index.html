@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Priyam Mahajan · Healthcare Cybersecurity · Research · Speaker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --yellow: #F5C842;
+      --yellow-soft: #FDF6DC;
+      --yellow-pale: #FFFCF0;
+      --pink: #E8517A;
+      --pink-soft: #FCEEF3;
+      --ink: #141414;
+      --ink-2: #3A3A3A;
+      --muted: #7A7A7A;
+      --muted-2: #B0B0B0;
+      --bg: #FAFAF7;
+      --white: #FFFFFF;
+      --border: rgba(0,0,0,0.07);
+      --border-2: rgba(0,0,0,0.12);
+      --radius: 16px;
+      --radius-sm: 8px;
+      --max: 1080px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CURSOR ── */
+    .cursor { position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none; }
+    .c-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--pink); position: absolute;
+      transform: translate(-50%,-50%);
+    }
+    .c-ring {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1.5px solid var(--yellow);
+      position: absolute; transform: translate(-50%,-50%);
+      transition: all 0.2s ease;
+    }
+    body:has(a:hover) .c-ring,
+    body:has(button:hover) .c-ring {
+      transform: translate(-50%,-50%) scale(1.7);
+      border-color: var(--pink); opacity: 0.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(250,250,247,0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-color: var(--border-2); }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 600; letter-spacing: 0.01em;
+      text-decoration: none; color: var(--ink);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--ink) !important; color: var(--white) !important;
+      padding: 0.5rem 1.2rem; border-radius: 100px;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--pink) !important; }
+
+    /* ── SHARED ── */
+    .container { max-width: var(--max); margin: 0 auto; }
+    section { padding: 6rem 3rem; }
+    .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem; display: flex;
+      align-items: center; gap: 10px;
+    }
+    .label::before {
+      content: ''; display: block; width: 24px; height: 1px;
+      background: var(--yellow);
+    }
+    .h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 600; line-height: 1.1; letter-spacing: -0.01em;
+    }
+    .h2 em { font-style: italic; color: var(--pink); }
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .stagger-1 { transition-delay: 0.05s; }
+    .stagger-2 { transition-delay: 0.12s; }
+    .stagger-3 { transition-delay: 0.19s; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 4rem;
+      padding: 8rem 3rem 5rem;
+      max-width: var(--max); margin: 0 auto;
+    }
+    .hero-left { position: relative; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-2); margin-bottom: 2rem;
+      animation: up 0.8s ease both;
+    }
+    .hero-eyebrow-pip {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 700; line-height: 0.95; letter-spacing: -0.02em;
+      animation: up 0.8s 0.08s ease both;
+    }
+    .hero-name .first { display: block; color: var(--ink); }
+    .hero-name .last {
+      display: block;
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--pink) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-focus {
+      margin: 2rem 0;
+      padding: 1.2rem 1.5rem;
+      background: var(--yellow-soft);
+      border-left: 3px solid var(--yellow);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      animation: up 0.8s 0.16s ease both;
+    }
+    .hero-focus-label {
+      font-family: 'DM Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .hero-focus-text {
+      font-size: 0.95rem; font-weight: 500; color: var(--ink);
+      line-height: 1.5;
+    }
+    .hero-focus-text strong { color: var(--pink); font-weight: 600; }
+    .hero-pills {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem;
+      animation: up 0.8s 0.22s ease both;
+    }
+    .pill {
+      padding: 0.38rem 0.9rem; border-radius: 100px;
+      font-size: 0.78rem; font-weight: 500;
+      border: 1px solid var(--border-2);
+      background: var(--white); color: var(--ink-2);
+      transition: all 0.18s;
+    }
+    .pill:hover { border-color: var(--yellow); background: var(--yellow-soft); }
+    .pill.y { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
+    .hero-ctas {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      animation: up 0.8s 0.28s ease both;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0.8rem 1.8rem; border-radius: 100px;
+      font-size: 0.87rem; font-weight: 500;
+      text-decoration: none; transition: all 0.2s;
+      border: none; cursor: pointer; font-family: 'Outfit', sans-serif;
+    }
+    .btn-dark { background: var(--ink); color: var(--white); }
+    .btn-dark:hover { background: var(--ink-2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border-2); }
+    .btn-outline:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+    .hero-right {
+      display: flex; flex-direction: column; gap: 1rem;
+      animation: up 0.8s 0.1s ease both;
+    }
+    .hero-photo {
+      width: 100%; aspect-ratio: 3/4; border-radius: 20px;
+      background: var(--yellow-soft);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-photo-placeholder {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--muted); font-size: 0.8rem; font-family: 'DM Mono', monospace;
+    }
+    .hero-photo-placeholder span { font-size: 2.5rem; }
+    .hero-stats-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .hstat {
+      background: var(--white); border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem; border: 1px solid var(--border);
+    }
+    .hstat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem; font-weight: 700; line-height: 1;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hstat-label { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
+    @keyframes up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── FOCUS BANNER ── */
+    #focus {
+      padding: 3.5rem 3rem;
+      background: var(--ink);
+    }
+    .focus-inner {
+      max-width: var(--max); margin: 0 auto;
+      display: grid; grid-template-columns: auto 1fr auto;
+      align-items: center; gap: 3rem;
+    }
+    .focus-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600;
+      color: var(--white); white-space: nowrap;
+    }
+    .focus-areas {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .focus-chip {
+      padding: 0.5rem 1.1rem; border-radius: 100px;
+      font-size: 0.8rem; font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      transition: all 0.2s;
+    }
+    .focus-chip:hover { border-color: var(--yellow); color: var(--yellow); }
+    .focus-chip.active {
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      color: var(--ink); border-color: transparent; font-weight: 600;
+    }
+    .focus-cta {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--yellow); text-decoration: none; white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .focus-cta:hover { opacity: 0.7; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+    .about-inner {
+      max-width: var(--max); margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: 5rem; align-items: start; margin-top: 3rem;
+    }
+    .about-sidebar {}
+    .about-photo-sm {
+      width: 100%; aspect-ratio: 4/5; border-radius: var(--radius);
+      background: var(--yellow-soft); overflow: hidden;
+      margin-bottom: 1.5rem; position: relative;
+    }
+    .about-photo-sm img { width: 100%; height: 100%; object-fit: cover; }
+    .about-photo-sm-ph {
+      width: 100%; height: 100%; display: flex; align-items: center;
+      justify-content: center; flex-direction: column; gap: 0.5rem;
+      color: var(--muted); font-size: 0.75rem; font-family: 'DM Mono', monospace;
+    }
+    .about-photo-sm-ph span { font-size: 2rem; }
+    .quick-facts { display: flex; flex-direction: column; gap: 12px; }
+    .qf {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.83rem; color: var(--ink-2);
+    }
+    .qf-icon { font-size: 1rem; flex-shrink: 0; }
+    .about-body {}
+    .about-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem; font-weight: 600; line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    .about-body h3 em { font-style: italic; color: var(--pink); }
+    .about-body p {
+      font-size: 0.95rem; color: var(--ink-2); line-height: 1.85;
+      font-weight: 300; margin-bottom: 1rem;
+    }
+    .about-body p strong { color: var(--ink); font-weight: 500; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.8rem; }
+    .atag {
+      padding: 0.32rem 0.85rem; font-size: 0.75rem; font-weight: 500;
+      border-radius: 100px; background: var(--yellow-soft);
+      color: var(--ink); border: 1px solid rgba(245,200,66,0.4);
+    }
+    .atag.healthcare { background: var(--pink-soft); border-color: rgba(232,81,122,0.2); color: var(--pink); }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--bg); }
+    .exp-inner { max-width: var(--max); margin: 3rem auto 0; }
+    .exp-table { display: flex; flex-direction: column; gap: 1px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .exp-row {
+      display: grid; grid-template-columns: 180px 1fr auto;
+      align-items: start; gap: 2rem; padding: 1.8rem 2rem;
+      background: var(--white); transition: background 0.2s;
+      cursor: default;
+    }
+    .exp-row:hover { background: var(--yellow-pale); }
+    .exp-row + .exp-row { border-top: 1px solid var(--border); }
+    .exp-meta {}
+    .exp-company { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em; }
+    .exp-date { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); margin-top: 4px; }
+    .exp-content {}
+    .exp-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; }
+    .exp-bullets { list-style: none; }
+    .exp-bullets li {
+      font-size: 0.83rem; color: var(--muted); padding: 0.2rem 0 0.2rem 1rem;
+      position: relative; line-height: 1.5; font-weight: 300;
+    }
+    .exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--yellow); }
+    .exp-badge {
+      font-family: 'DM Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.3rem 0.7rem; border-radius: 100px;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      color: var(--ink); white-space: nowrap; font-weight: 500;
+      height: fit-content;
+    }
+    .exp-badge.plain {
+      background: var(--yellow-soft);
+      color: var(--muted); font-weight: 400;
+    }
+
+    /* ── SPEAKING ── */
+    #speaking { background: var(--white); }
+    .speaking-inner { max-width: var(--max); margin: 3rem auto 0; }
+    .speaking-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .speaking-card {
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none; color: var(--ink);
+      display: block;
+    }
+    .speaking-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.07); }
+    .speaking-thumb {
+      aspect-ratio: 16/9; position: relative;
+      background: var(--yellow-soft);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .speaking-thumb-icon { font-size: 2rem; }
+    .speaking-thumb-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--yellow), var(--pink));
+    }
+    .speaking-play-btn {
+      position: absolute; width: 44px; height: 44px; border-radius: 50%;
+      background: var(--white); display: flex; align-items: center;
+      justify-content: center; font-size: 1rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: transform 0.2s;
+    }
+    .speaking-card:hover .speaking-play-btn { transform: scale(1.08); }
+    .speaking-body { padding: 1.2rem; }
+    .speaking-event-label {
+      font-family: 'DM Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--pink);
+      margin-bottom: 0.4rem;
+    }
+    .speaking-title-text { font-size: 0.9rem; font-weight: 500; line-height: 1.4; }
+    .speaking-meta-text { font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem; }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg); }
+    .projects-inner { max-width: var(--max); margin: 3rem auto 0; }
+    .project-list { display: flex; flex-direction: column; }
+    .project-item {
+      display: grid; grid-template-columns: 3rem 1fr auto;
+      align-items: center; gap: 2rem;
+      padding: 1.6rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none; color: var(--ink);
+      transition: padding-left 0.2s;
+    }
+    .project-item:first-child { border-top: 1px solid var(--border); }
+    .project-item:hover { padding-left: 0.5rem; }
+    .project-item:hover .p-arrow { color: var(--pink); }
+    .p-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 600;
+      color: var(--yellow); line-height: 1;
+    }
+    .p-name { font-size: 1rem; font-weight: 500; margin-bottom: 0.25rem; }
+    .p-desc { font-size: 0.82rem; color: var(--muted); font-weight: 300; line-height: 1.5; }
+    .p-chips { display: flex; gap: 6px; margin-top: 0.5rem; flex-wrap: wrap; }
+    .p-chip {
+      padding: 0.18rem 0.6rem; border-radius: 100px;
+      font-size: 0.68rem; font-family: 'DM Mono', monospace;
+      background: var(--yellow-soft); color: var(--ink);
+    }
+    .p-chip.health { background: var(--pink-soft); color: var(--pink); }
+    .p-arrow { font-size: 1rem; color: var(--muted-2); transition: color 0.2s; }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials { background: var(--white); overflow: hidden; }
+    .testi-inner { max-width: var(--max); margin: 0 auto; }
+    .testi-scroll-wrap { overflow: hidden; margin-top: 3rem; }
+    .testi-scroll {
+      display: flex; gap: 1.5rem; width: max-content;
+      animation: slide 36s linear infinite;
+    }
+    .testi-scroll:hover { animation-play-state: paused; }
+    @keyframes slide {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .tcard {
+      width: 320px; flex-shrink: 0;
+      background: var(--bg); border-radius: var(--radius);
+      padding: 1.8rem; border: 1px solid var(--border);
+    }
+    .tcard-stars { color: var(--yellow); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .tcard-text {
+      font-size: 0.9rem; color: var(--ink-2); line-height: 1.75;
+      font-weight: 300; font-style: italic;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+    }
+    .tcard-author { margin-top: 1.4rem; display: flex; align-items: center; gap: 10px; }
+    .tcard-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 600; color: var(--ink);
+    }
+    .tcard-name { font-size: 0.83rem; font-weight: 600; }
+    .tcard-role { font-size: 0.73rem; color: var(--muted); }
+
+    /* ── CREDENTIALS ── */
+    #credentials { background: var(--bg); }
+    .creds-inner { max-width: var(--max); margin: 3rem auto 0; }
+    .creds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .cred {
+      background: var(--white); border-radius: var(--radius-sm);
+      padding: 1.4rem; border: 1px solid var(--border);
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+    .cred:hover { border-color: var(--yellow); }
+    .cred-icon-box {
+      width: 38px; height: 38px; flex-shrink: 0; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .cred-icon-box.y { background: var(--yellow-soft); }
+    .cred-icon-box.p { background: var(--pink-soft); }
+    .cred-name { font-size: 0.85rem; font-weight: 500; line-height: 1.3; }
+    .cred-issuer { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--ink);
+      padding: 7rem 3rem; text-align: center;
+    }
+    .contact-inner { max-width: 640px; margin: 0 auto; }
+    .contact-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--yellow); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .contact-label::before, .contact-label::after { content: ''; display: block; width: 24px; height: 1px; background: var(--yellow); opacity: 0.4; }
+    .contact-h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 600;
+      color: var(--white); line-height: 1.1; margin-bottom: 1rem;
+    }
+    .contact-h2 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .contact-sub { font-size: 0.93rem; color: rgba(255,255,255,0.45); font-weight: 300; margin-bottom: 2.5rem; line-height: 1.7; }
+    .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .clink {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0.8rem 1.6rem; border-radius: 100px;
+      text-decoration: none; font-size: 0.85rem; font-weight: 500;
+      transition: all 0.2s;
+    }
+    .clink-email {
+      background: linear-gradient(135deg, var(--yellow), var(--pink));
+      color: var(--ink);
+    }
+    .clink-email:hover { opacity: 0.88; transform: translateY(-2px); }
+    .clink-secondary {
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .clink-secondary:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+    .footer { margin-top: 4rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: rgba(255,255,255,0.18); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .about-inner { grid-template-columns: 1fr; }
+      .speaking-grid { grid-template-columns: 1fr 1fr; }
+      .creds-grid { grid-template-columns: 1fr 1fr; }
+      .focus-inner { grid-template-columns: 1fr; gap: 1rem; }
+      .exp-row { grid-template-columns: 1fr; gap: 0.5rem; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 4rem 1.5rem; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .speaking-grid { grid-template-columns: 1fr; }
+      .creds-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor">
+    <div class="c-ring" id="cRing"></div>
+    <div class="c-dot" id="cDot"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">
+      <div class="nav-logo-dot"></div>
+      Priyam Mahajan
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#speaking">Speaking</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact" class="nav-cta">Connect</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-pip"></div>
+        Healthcare Cybersecurity · Fredericton, NB
+      </div>
+      <h1 class="hero-name">
+        <span class="first">Priyam</span>
+        <span class="last">Mahajan</span>
+      </h1>
+      <div class="hero-focus">
+        <div class="hero-focus-label">Primary Focus</div>
+        <div class="hero-focus-text">
+          <strong>Healthcare cybersecurity</strong> — protecting patients, systems, and the data that connects them. SOC analyst · researcher · speaker · founder-in-progress.
+        </div>
+      </div>
+      <div class="hero-pills">
+        <span class="pill y">SOC Analyst · 2.5 yrs</span>
+        <span class="pill">BCS, UNB · Dec 2026</span>
+        <span class="pill">MSc Candidate · 2027</span>
+        <span class="pill">Speaker · 4,400+ learners</span>
+      </div>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-dark">↗ Get in touch</a>
+        <a href="#projects" class="btn btn-outline">View my work</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-photo">
+        <!-- Replace with: <img src="your-photo.jpg" alt="Priyam Mahajan" /> -->
+        <div class="hero-photo-placeholder">
+          <span></span>
+          <p><img src="Graduation_photos.jpg" alt="Priyam Mahajan" /></p>
+        </div>
+      </div>
+      <div class="hero-stats-row">
+        <div class="hstat">
+          <div class="hstat-num">53%</div>
+          <div class="hstat-label">Phishing click reduction</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">4,400+</div>
+          <div class="hstat-label">Learners reached annually</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">8K+</div>
+          <div class="hstat-label">Employees protected</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-num">250+</div>
+          <div class="hstat-label">Vulnerabilities remediated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOCUS BANNER -->
+  <div id="focus">
+    <div class="focus-inner reveal">
+      <div class="focus-heading">Research Interests</div>
+      <div class="focus-areas">
+        <span class="focus-chip active">Healthcare Cybersecurity</span>
+        <span class="focus-chip active">IoMT Device Security</span>
+        <span class="focus-chip active">AI Governance in Health</span>
+        <span class="focus-chip">Shadow AI & PHI Leakage</span>
+        <span class="focus-chip">PIPEDA Compliance</span>
+        <span class="focus-chip">SOC Operations</span>
+      </div>
+      <a href="#contact" class="focus-cta">Open to collaborations →</a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container">
+      <div class="label reveal">01 — About</div>
+      <h2 class="h2 reveal">More than a <em>cyber person.</em></h2>
+      <div class="about-inner">
+        <div class="about-sidebar reveal">
+          <div class="about-photo-sm">
+            <!-- Replace with: <img src="Graduation_photos.jpg" alt="Priyam Mahajan" /> -->
+            <div class="about-photo-sm-ph">
+              <span></span>
+              <p><img src="headshot-bproof.jpg" alt="Priyam Mahajan" /></p>
+            </div>
+          </div>
+          <div class="quick-facts">
+            <div class="qf"><span class="qf-icon">📍</span> Fredericton, New Brunswick</div>
+            <div class="qf"><span class="qf-icon">🎓</span> BCS, UNB — December 2026</div>
+            <div class="qf"><span class="qf-icon">🔬</span> MSc applicant, 2027</div>
+            <div class="qf"><span class="qf-icon">🏥</span> Focus: healthcare cybersecurity</div>
+            <div class="qf"><span class="qf-icon">🌏</span> International student, India</div>
+            <div class="qf"><span class="qf-icon">🚀</span> Founder — NB local business security</div>
+          </div>
+        </div>
+        <div class="about-body reveal stagger-1">
+          <h3>I protect systems,<br>empower people, and build things <em>that matter.</em></h3>
+          <p>I'm a cybersecurity professional and computer science student at the University of New Brunswick, graduating December 2026. With 2 years of hands-on SOC experience, I've protected thousands of users, reduced phishing click rates significantly, and led security migrations at enterprise scale.</p>
+          <p>My specific focus is healthcare cybersecurity -  where the stakes couldn't be higher. Medical records are worth <strong>250x</strong> more than credit card data on the dark web. Canadian hospitals have been paralysed by ransomware. Clinical staff are unknowingly exposing patient data through AI tools every single day. I want to be one of the people who fixes that.</p>
+          <p>But I'm also a speaker who has contributed to 4,400+ learners annually through Digital Skills for Women+, a conference chair who introduced girls in grades 7–12 to computer science, and a co-founder building cybersecurity solutions to protect local businesses & clinics in New Brunswick.</p>
+          <div class="about-tags">
+            <span class="atag healthcare">Healthcare Cybersecurity</span>
+            <span class="atag healthcare">IoMT Security</span>
+            <span class="atag healthcare">AI Governance</span>
+            <span class="atag">SOC Operations</span>
+            <span class="atag">Azure Sentinel</span>
+            <span class="atag">SIEM & EDR</span>
+            <span class="atag">Python</span>
+            <span class="atag">AWS & Azure</span>
+            <span class="atag">Lean Six Sigma</span>
+            <span class="atag">STEM Advocacy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="container">
+      <div class="label reveal">02 — Experience</div>
+      <h2 class="h2 reveal">Where I've <em>done the work.</em></h2>
+      <div class="exp-inner">
+        <div class="exp-table reveal stagger-1">
+          <div class="exp-row">
+            <div class="exp-meta">
+              <div class="exp-company">Bulletproof, a GLI Co.</div>
+              <div class="exp-date">May 2024 – Apr 2026</div>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Tier 1 SOC Analyst</div>
+              <ul class="exp-bullets">
+                <li>Reduced phishing click rates by 53% across 2,500+ users — 100% training completion</li>
+                <li>Mentored 10+ interns and new hires; delivered executive-level technical demos to white glove clients</li>
+                <li>Technical lead on security migration — fixed critical design vulnerabilities pre-release</li>
+              </ul>
+            </div>
+            <div class="exp-badge">Recent</div>
+          </div>
+          <div class="exp-row">
+            <div class="exp-meta">
+              <div class="exp-company">Digital Skills for Women+</div>
+              <div class="exp-date">Jan 2025 – Present</div>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Cybersecurity Speaker</div>
+              <ul class="exp-bullets">
+                <li>4,400+ annual learners · 430+ graduates · 978 job placements</li>
+                <li>Created cybersecurity curriculum adopted across multiple cohorts and speakers</li>
+              </ul>
+            </div>
+            <div class="exp-badge">Active</div>
+          </div>
+          <div class="exp-row">
+            <div class="exp-meta">
+              <div class="exp-company">Day & Ross</div>
+              <div class="exp-date">Jan – May 2024</div>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Cybersecurity Intern</div>
+              <ul class="exp-bullets">
+                <li>Reduced cyberattack risk by 40% — identified and remediated 250+ critical vulnerabilities</li>
+                <li>Security awareness campaigns impacting 8,000+ employees</li>
+              </ul>
+            </div>
+            <div class="exp-badge plain">Completed</div>
+          </div>
+          <div class="exp-row">
+            <div class="exp-meta">
+              <div class="exp-company">Capital Family Services</div>
+              <div class="exp-date">Jun 2023 – Jan 2025</div>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Youth Support Worker</div>
+              <ul class="exp-bullets">
+                <li>NVCI-certified crisis intervention — trauma-informed care for youth</li>
+                <li>Multidisciplinary collaboration on holistic, person-centred care plans</li>
+              </ul>
+            </div>
+            <div class="exp-badge plain">Completed</div>
+          </div>
+          <div class="exp-row">
+            <div class="exp-meta">
+              <div class="exp-company">CloudEQ</div>
+              <div class="exp-date">Aug – Dec 2022</div>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Junior Software Engineer</div>
+              <ul class="exp-bullets">
+                <li>Closed a 71% visibility gap in cloud logs via AWS/Azure</li>
+                <li>Technical documentation adopted by 350+ clients</li>
+              </ul>
+            </div>
+            <div class="exp-badge plain">Completed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPEAKING -->
+  <section id="speaking">
+    <div class="container">
+      <div class="label reveal">03 — Speaking & Events</div>
+      <h2 class="h2 reveal">I talk about <em>the hard stuff.</em></h2>
+      <div class="speaking-inner">
+        <div class="speaking-grid">
+          <a href="#" class="speaking-card reveal stagger-1">
+            <div class="speaking-thumb" style="background: var(--yellow-soft);">
+              <div class="speaking-thumb-icon">🎙️</div>
+              <div class="speaking-play-btn">▶</div>
+              <div class="speaking-thumb-bar"></div>
+            </div>
+            <div class="speaking-body">
+              <div class="speaking-event-label">Digital Skills for Women+</div>
+              <div class="speaking-title-text">Breaking into cybersecurity</div>
+              <div class="speaking-meta-text">2025 · 4,400+ learners</div>
+            </div>
+          </a>
+          <a href="#" class="speaking-card reveal stagger-2">
+            <div class="speaking-thumb" style="background: var(--pink-soft);">
+              <div class="speaking-thumb-icon">💻</div>
+              <div class="speaking-play-btn">▶</div>
+              <div class="speaking-thumb-bar"></div>
+            </div>
+            <div class="speaking-body">
+              <div class="speaking-event-label">Go Code Girl Conference</div>
+              <div class="speaking-title-text">Conference Chair — Introducing Grades 7–12 to Computer Science</div>
+              <div class="speaking-meta-text">Feb – Sep 2024 · Fredericton</div>
+            </div>
+          </a>
+          <a href="#" class="speaking-card reveal stagger-3">
+            <div class="speaking-thumb" style="background: var(--yellow-soft);">
+              <div class="speaking-thumb-icon">🔒</div>
+              <div class="speaking-play-btn">▶</div>
+              <div class="speaking-thumb-bar"></div>
+            </div>
+            <div class="speaking-body">
+              <div class="speaking-event-label">Security Awareness</div>
+              <div class="speaking-title-text">Human Risk: The Biggest Vulnerability in Your Organisation</div>
+              <div class="speaking-meta-text">Ongoing · Enterprise-level</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container">
+      <div class="label reveal">04 — Projects</div>
+      <h2 class="h2 reveal">Things I'm <em>building.</em></h2>
+      <div class="projects-inner">
+        <div class="project-list">
+          <a href="#" class="project-item reveal">
+            <div class="p-num">01</div>
+            <div>
+              <div class="p-name">Shadow AI Risk Tracker</div>
+              <div class="p-desc">Detects PHI in text before it's pasted into public AI tools — a PIPEDA-aware pre-flight check built for healthcare workers.</div>
+              <div class="p-chips">
+                <span class="p-chip health">Healthcare</span>
+                <span class="p-chip">Python</span>
+                <span class="p-chip">spaCy</span>
+                <span class="p-chip">Streamlit</span>
+              </div>
+            </div>
+            <div class="p-arrow">→</div>
+          </a>
+          <a href="#" class="project-item reveal stagger-1">
+            <div class="p-num">02</div>
+            <div>
+              <div class="p-name">Canadian Healthcare Breach Dashboard</div>
+              <div class="p-desc">Live visualization of Canadian healthcare cybersecurity incidents — breach type, province, records exposed, financial impact over time.</div>
+              <div class="p-chips">
+                <span class="p-chip health">Healthcare</span>
+                <span class="p-chip">Python</span>
+                <span class="p-chip">Plotly</span>
+                <span class="p-chip">OPC Data</span>
+              </div>
+            </div>
+            <div class="p-arrow">→</div>
+          </a>
+          <a href="#" class="project-item reveal stagger-2">
+            <div class="p-num">03</div>
+            <div>
+              <div class="p-name">Phishing Email Classifier</div>
+              <div class="p-desc">ML model trained on public phishing datasets + 2.5 years of SOC pattern recognition. Built for the noise an analyst sees daily.</div>
+              <div class="p-chips">
+                <span class="p-chip">Python</span>
+                <span class="p-chip">scikit-learn</span>
+                <span class="p-chip">HuggingFace</span>
+              </div>
+            </div>
+            <div class="p-arrow">→</div>
+          </a>
+          <a href="#" class="project-item reveal stagger-3">
+            <div class="p-num">04</div>
+            <div>
+              <div class="p-name">IoMT Vulnerability Report</div>
+              <div class="p-desc">Technical analysis of known CVEs in medical IoT devices — pacemakers, insulin pumps, infusion systems. References CICIoMT2024 dataset.</div>
+              <div class="p-chips">
+                <span class="p-chip health">Healthcare</span>
+                <span class="p-chip health">IoMT</span>
+                <span class="p-chip">Research</span>
+                <span class="p-chip">CVE Analysis</span>
+              </div>
+            </div>
+            <div class="p-arrow">→</div>
+          </a>
+          <a href="#" class="project-item reveal">
+            <div class="p-num">05</div>
+            <div>
+              <div class="p-name">NB Small Business Security Baseline</div>
+              <div class="p-desc">Free, open-source security audit tool for Fredericton small businesses — PIPEDA obligations, local breach examples, risk scoring.</div>
+              <div class="p-chips">
+                <span class="p-chip">Open Source</span>
+                <span class="p-chip">JavaScript</span>
+                <span class="p-chip">PIPEDA</span>
+              </div>
+            </div>
+            <div class="p-arrow">→</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="testi-inner">
+      <div class="label reveal">05 — Testimonials</div>
+      <h2 class="h2 reveal">What people <em>say.</em></h2>
+    </div>
+    <div class="testi-scroll-wrap reveal">
+      <div class="testi-scroll">
+        <div class="tcard">
+          <div class="tcard-stars">★★★★★</div>
+          <div class="tcard-text">"Priyam has been a cybersecurity speaker and educator for 3 cohorts and counting. She has natural talent and made cybersecurity feel urgent, relevant, and human. Our learners connected with her immediately."</div>
+          <div class="tcard-author">
+            <div class="tcard-avatar">DS</div>
+            <div><div class="tcard-name">Program Lead</div><div class="tcard-role">Digital Skills for Women+</div></div>
+          </div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-stars">★★★★★</div>
+          <div class="tcard-text">"Technically excellent and exceptionally self-directed. The kind of analyst who makes everyone around her better."</div>
+          <div class="tcard-author">
+            <div class="tcard-avatar">BG</div>
+            <div><div class="tcard-name">Tier 1 Team Lead</div><div class="tcard-role">Bulletproof, a GLI Company</div></div>
+          </div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-stars">★★★★★</div>
+          <div class="tcard-text">"Priyam has an exceptional eye for detail and organization. She was a delight to work with."</div>
+          <div class="tcard-author">
+            <div class="tcard-avatar">EM</div>
+            <div><div class="tcard-name">Team Lead</div><div class="tcard-role">Day & Ross</div></div>
+          </div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-stars">★★★★★</div>
+          <div class="tcard-text">"Priyam showed incredible resilience and problem solving abillity while leading the Go Code Girl conference. Her energy and warmth that inspired every student in the room. A natural leader."</div>
+          <div class="tcard-author">
+            <div class="tcard-avatar">GC</div>
+            <div><div class="tcard-name">Communications Chair</div><div class="tcard-role">Go Code Girl · Fredericton</div></div>
+          </div>
+        </div>
+        <div class="tcard" style="border-style: dashed; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 0.5rem;">
+          <div style="font-size: 1.5rem;">＋</div>
+          <div class="tcard-name" style="font-size: 0.8rem;">Your testimonial here</div>
+          <div class="tcard-role"></div>
+        </div>
+        <!-- Duplicate for seamless loop -->
+        <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">"Priyam brought something rare to our program — she made cybersecurity feel urgent, relevant, and human. Our learners connected with her immediately."</div><div class="tcard-author"><div class="tcard-avatar">DS</div><div><div class="tcard-name">Program Lead</div><div class="tcard-role">Digital Skills for Women+</div></div></div></div>
+        <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">"Technically excellent and exceptionally self-directed. The kind of analyst who makes everyone around her better."</div><div class="tcard-author"><div class="tcard-avatar">BG</div><div><div class="tcard-name">Senior Analyst</div><div class="tcard-role">Bulletproof, a GLI Company</div></div></div></div>
+        <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">"Priyam designed and launched a program from scratch in weeks. Her initiative, empathy, and follow-through are genuinely exceptional."</div><div class="tcard-author"><div class="tcard-avatar">EM</div><div><div class="tcard-name">Director</div><div class="tcard-role">UNB Career Development Centre</div></div></div></div>
+        <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-text">"She led our Go Code Girl conference with clarity and warmth that inspired every student in the room. A natural leader."</div><div class="tcard-author"><div class="tcard-avatar">GC</div><div><div class="tcard-name">Organiser</div><div class="tcard-role">Go Code Girl · Fredericton</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENTIALS -->
+  <section id="credentials">
+    <div class="container">
+      <div class="label reveal">06 — Education & Credentials</div>
+      <h2 class="h2 reveal">The <em>foundations.</em></h2>
+      <div class="creds-inner">
+        <div class="creds-grid">
+          <div class="cred reveal"><div class="cred-icon-box y">🎓</div><div><div class="cred-name">BCS — Computer Science</div><div class="cred-issuer">University of New Brunswick · 2023–2026</div></div></div>
+          <div class="cred reveal stagger-1"><div class="cred-icon-box p">📊</div><div><div class="cred-name">Diploma — Technology Management & Entrepreneurship</div><div class="cred-issuer">University of New Brunswick</div></div></div>
+          <div class="cred reveal stagger-2"><div class="cred-icon-box y">🏆</div><div><div class="cred-name">Lean Six Sigma Yellow Belt</div><div class="cred-issuer">Issued January 2026</div></div></div>
+          <div class="cred reveal"><div class="cred-icon-box p">🛡️</div><div><div class="cred-name">NVCI — Non-Violent Crisis Intervention</div><div class="cred-issuer">Certified</div></div></div>
+          <div class="cred reveal stagger-1"><div class="cred-icon-box y">🎓</div><div><div class="cred-name">BCA — Computer Applications</div><div class="cred-issuer">Panjab University, India · 2019–2022</div></div></div>
+          <div class="cred reveal stagger-2"><div class="cred-icon-box p">📡</div><div><div class="cred-name">Cybersecurity Awareness Training Facilitator</div><div class="cred-issuer">Certified</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner reveal">
+      <div class="contact-label">Let's connect</div>
+      <h2 class="contact-h2">Open to what's <em>next.</em></h2>
+      <p class="contact-sub">Healthcare cybersecurity roles · research collaborations · speaking invitations · startup conversations · Based in Fredericton, open to remote.</p>
+      <div class="contact-links">
+        <a href="mailto:priyam.mahajan@unb.ca" class="clink clink-email">✉ priyam.mahajan@unb.ca</a>
+        <a href="https://linkedin.com/in/priyammahajancs" target="_blank" class="clink clink-secondary">↗ LinkedIn</a>
+        <a href="https://github.com/priyammahajan" target="_blank" class="clink clink-secondary">⌥ GitHub</a>
+      </div>
+    </div>
+    <div class="footer">Priyam Mahajan · Fredericton, NB · Built with intention · © 2026</div>
+  </section>
+
+  <script>
+    // Cursor
+    const cDot = document.getElementById('cDot');
+    const cRing = document.getElementById('cRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    (function anim() {
+      rx += (mx-rx)*0.13; ry += (my-ry)*0.13;
+      cDot.style.cssText = `left:${mx}px;top:${my}px`;
+      cRing.style.cssText = `left:${rx}px;top:${ry}px`;
+      requestAnimationFrame(anim);
+    })();
+
+    // Nav scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', scrollY > 40);
+    });
+
+    // Reveal on scroll
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e,i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 55);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
